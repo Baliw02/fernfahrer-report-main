@@ -36,12 +36,12 @@ export default {
                centerColumn: [],
                rightColumn: [],
 
-               images: [],
-               imagesLeft: [],
-               imagesCenter: [],
-               imagesRight: [],
-               twoImagesLeft: [],
-               twoImagesRight: [],
+               videos: [],
+               videosLeft: [],
+               videosCenter: [],
+               videosRight: [],
+               twoVideosLeft: [],
+               twoVideosRight: [],
 
                chunks: 0,
                limiter: 15,
@@ -50,46 +50,46 @@ export default {
           }
      },
      methods:{
-          async getImages(){
-               await axios.get(this.apiUrl +'bestImages', {params:{limit: this.limiter, from: this.chunks}}).then( res => {
-                    if(res.data.data.images.length != 0){
+          async getVideos(){
+               await axios.get('http://fernfahrer-reporter.de/api/json/getVideos', {params:{limit: this.limiter, from: this.chunks}}).then( res => {
+                    if(res.data.data.videos.length != 0){
                          this.contentLoading = true;
                     }
                     if(res.status === 200){
-                         this.images = [...res.data.data.images];
+                         this.videos = [...res.data.data.videos];
                          setTimeout(() => {
-                              this.setThreeColumnImages();
-                              this.setTwoColumnImages();          
+                              this.setThreeColumnVideos();
+                              this.setTwoColumnVideos();          
                               this.lazyLoadLimiter();
                               this.contentLoading = false;
-                         }, 100);
+                         }, 200);
                     }
                });
           },
           async lazyLoadLimiter(){
                this.chunks += 15;
           },
-          setThreeColumnImages(){
+          setThreeColumnVideos(){
                setTimeout(() => {
-                    for( var i = 0; i + 1 <= this.images.length; i+=3 ){
-                         this.imagesLeft.push(this.images[i]);
+                    for( var i = 0; i + 1 <= this.videos.length; i+=3 ){
+                         this.videosLeft.push(this.videos[i]);
                     }
-                    for( var j = 1; j + 1 <= this.images.length; j+=3 ){
-                         this.imagesCenter.push(this.images[j]);
+                    for( var j = 1; j + 1 <= this.videos.length; j+=3 ){
+                         this.videosCenter.push(this.videos[j]);
                     }
-                    for( var k = 2; k + 1 <= this.images.length; k+=3 ){
-                         this.imagesRight.push(this.images[k]);
+                    for( var k = 2; k + 1 <= this.videos.length; k+=3 ){
+                         this.videosRight.push(this.videos[k]);
                     }
                }, 200)
           },
-          setTwoColumnImages(){
+          setTwoColumnVideos(){
                setTimeout(() => {
-                    for( var i = 0; i + 1 < this.images.length; i++){
+                    for( var i = 0; i + 1 < this.videos.length; i++){
                          if(i % 2 == 0){
-                              this.twoImagesLeft.push(this.images[i]);
+                              this.twoVideosLeft.push(this.videos[i]);
                          }
                          else{
-                              this.twoImagesRight.push(this.images[i]);
+                              this.twoVideosRight.push(this.videos[i]);
                          }
                     }
                }, 200)
@@ -100,13 +100,13 @@ export default {
                this.rightColumn = [];
                setTimeout(() => {
                     if(this.windowWidth >= 960){
-                         this.leftColumn = this.imagesLeft;
-                         this.centerColumn = this.imagesCenter;
-                         this.rightColumn = this.imagesRight;
+                         this.leftColumn = this.videosLeft;
+                         this.centerColumn = this.videosCenter;
+                         this.rightColumn = this.videosRight;
                     }                    
                     else{
-                         this.leftColumn = this.twoImagesLeft;
-                         this.rightColumn = this.twoImagesRight;
+                         this.leftColumn = this.twoVideosLeft;
+                         this.rightColumn = this.twoVideosRight;
                     }
 
                }, 500)
@@ -115,20 +115,14 @@ export default {
                this.setTabContent();
           },
           selectContent(id){
-               this.$router.push({name: 'Image view', params: {id: id}});
+               this.$router.push({name: 'Video view', params: {id: id}});
           },
           lazyLoadController(){
                let bottomWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
                if(bottomWindow){
-                    this.getImages();
+                    this.getVideos();
                }
-          },
-          resetColumns(){
-               this.leftColumn.length = 0;
-               this.centerColumn.length = 0;
-               this.rightColumn.length = 0;
           }
-
      },
      created(){
           window.addEventListener('resize', this.columnController);
@@ -138,9 +132,7 @@ export default {
 
      },
      mounted(){
-          this.resetColumns()
-          this.getImages();
-          this.setTabContent();
+          this.getVideos();
      },
 
      computed:{
@@ -150,6 +142,12 @@ export default {
                windowWidth: state => state.windowWidth,
                selectedTab: state => state.selectedTab,
           }),
+          getSearchResults(){
+               return this.applicationUsers.filter((user) => {
+                    return user.username.toUpperCase().match(this.searchText.toUpperCase());
+               }); 
+          },
+
      }
 }
 </script>

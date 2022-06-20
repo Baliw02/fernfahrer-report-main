@@ -9,12 +9,12 @@ import VueCookies from 'vue-cookies';
 Vue.use(VueCookies);
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUserSecret, faSearch, faBars, faXmark, faTimes, faAngleLeft, faAngleRight, faAngleUp, faAngleDown, faUser, faClock, faShare } from '@fortawesome/free-solid-svg-icons';
+import { faUserSecret, faSearch, faBars, faXmark, faTimes, faAngleLeft, faAngleRight, faAngleUp, faAngleDown, faUser, faClock, faShare, faCirclePlus, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import {faHeart as faHeartSolid} from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faMessage, faImage} from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faUserSecret, faSearch, faBars, faXmark, faTimes, faAngleLeft, faAngleRight, faAngleUp, faAngleDown, faUser, faHeart, faHeartSolid, faClock, faShare, faMessage, faImage);
+library.add(faUserSecret, faSearch, faBars, faXmark, faTimes, faAngleLeft, faAngleRight, faAngleUp, faAngleDown, faUser, faHeart, faHeartSolid, faClock, faShare, faMessage, faImage, faCirclePlus, faEllipsisV);
 
 
 Vue.use(VueLazyload, {

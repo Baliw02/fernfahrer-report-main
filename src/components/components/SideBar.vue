@@ -14,8 +14,8 @@
                     <div class="sidebar-bar__notification-not" v-if="!loggedIn">
                          ?                    
                     </div>
-                    <div class="sidebar-bar__notification-counter" v-if="loggedIn">
-                         0
+                    <div class="sidebar-bar__notification-counter" v-if="loggedIn" >
+                         {{currentUser.notifications}}
                     </div>
                </div>
           </div>
@@ -56,6 +56,8 @@ export default {
                menuActive: false,
                oldRoute: '',
                newRoute: '',
+               userId: '',
+               imageId: ''
           }
      },
      mounted(){
@@ -87,7 +89,7 @@ export default {
           },
           backToRoute(){
                this.$router.go(-1);
-          }
+          },
      },
      watch: {
           $route(to, from){
@@ -139,6 +141,9 @@ $icon-size: 20px;
                }
           }
           &__notification{
+               display: flex;
+               justify-content: center;
+               align-items: center;
                width: 24px;
                height: 24px;
                border-radius: 100%;

@@ -1,7 +1,36 @@
 <template>
      <div class="image">
+          <div class="image-options" v-if="currentUser.id === imageData.user_id" @click="pushOptions">
+               <font-awesome-icon icon="fas fa-ellipsis-v" />
+          </div>
+          <div class="image-options__list" v-if="imageOptions">
+               <div class="image-options__list-item">
+                    <div class="image-options__list-item-delete">
+                         Bearbeiten
+                    </div>
+                    <div class="image-options__list-item-delete" @click="pushDelete">
+                         Löschen
+                    </div>
+               </div>
+          </div>
+          <div class="push-notification" v-if="pushDeleteNotification">
+               <div class="push-notification__title">
+                    Reporter
+               </div>
+               <div class="push-notification__description">
+                    Bist du sicher, dass du dieses Video/Bild löschen möchtest?
+               </div>
+               <div class="push-notification__button">
+                    <div class="push-notification__button-close" @click="deleteImage(imageData.id)">
+                         Ja
+                    </div>
+                    <div class="push-notification__button-login" @click="closePush">
+                         Nein
+                    </div>
+               </div>
+          </div>
           <!-- {{imageData.id}} -->
-          <div class="wrapper" :class="{outfocus: pushNotification}">
+          <div class="wrapper" :class="{outfocus: pushLoginNotification}">
                <div class="image-box">
                     <img class="image-box__image" :src="dataUrl + imageData.image_url">
                     <!-- <button class="image-player__pagination prev" @click="lowerimageController">
@@ -30,7 +59,7 @@
                                         <div class="date-icon">
                                              <font-awesome-icon :icon="['fas', 'fa-clock']" />                                        
                                         </div>
-                                        {{imageData.uploaded}} Tage
+                                        {{imageData.uploadedHours}} Stunden
                                    </div>
                               </div>
                          </div>
@@ -54,7 +83,7 @@
                     Es gibt noch keine Kommentare!
                </div>
           </div>
-          <div class="push-notification" v-if="pushNotification">
+          <div class="push-notification" v-if="pushLoginNotification">
                <div class="push-notification__title">
                     Reporter
                </div>
@@ -84,7 +113,9 @@ export default {
                loggedIn: false,
                currentUserLiked: [],
                liked: false,
-               pushNotification: false
+               pushLoginNotification: false,
+               pushDeleteNotification: false,
+               imageOptions: false
           }
      },
      methods:{
@@ -92,6 +123,23 @@ export default {
                'getImage',
                'checkLoggedIn'
           ]),
+          pushOptions(){
+               if(!this.imageOptions){
+                    this.imageOptions = true;
+               }
+               else{
+                    this.imageOptions = false;
+               }
+          },
+          pushDelete(){
+               if(!this.pushDeleteNotification){
+                    this.pushLoginNotification = false;
+                    this.pushDeleteNotification = true;
+               }
+               else{
+                    this.pushDeleteNotification = false;
+               }
+          },
           getId(){
                console.log(this.$route.params.id);
           },
@@ -99,7 +147,8 @@ export default {
                this.$router.push({name: 'Profil', params: {id: userId}});
           },
           closePush(){
-               this.pushNotification = false;
+               this.pushLoginNotification = false;
+               this.pushDeleteNofication = false;
           },
           pushLogin(){
                this.$router.push({name: 'Anmeldung'});
@@ -143,8 +192,15 @@ export default {
                     }
                }
                else{
-                    this.pushNotification = true;
+                    this.pushLoginNotification = true;
+                    this.pushDeleteNotification = false;
                }
+          },
+          async deleteImage(){
+               axios.get(this.apiUrl + 'deleteImage', {params: {id: this.imageData.id, user_id: this.currentUser.id}}).then( res => {
+                    console.log(res);
+                    this.$router.push('Start');
+               })
           }
      },
      mounted(){
@@ -183,6 +239,37 @@ button{
 .image{
      margin-top: 50px;
      font-family: $f-roboto;
+     &-options{
+          position: fixed;
+          background-color: grey;
+          top: 0;
+          right: 0;
+          padding: 10px;
+          padding-right: 0;
+          width: 30px;
+          margin: auto;
+          z-index: 99999;
+          cursor: pointer;
+          font-size: 20px;
+     }
+     &-options__list{
+          position: fixed;
+          background-color: white;
+          color: black;
+          z-index: 999999;
+          top: 45px;
+          right: 0;
+          text-align: left;
+          border-radius: 3px;
+          &-item{
+               &-delete{
+                    padding: 10px 0px;
+                    padding-right: 60px;
+                    padding-left: 10px;
+                    cursor: pointer;
+               }
+          }
+     }
      .wrapper{
           transition: all .1s linear;
           &.outfocus{

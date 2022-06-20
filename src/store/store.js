@@ -15,7 +15,7 @@ export default new Vuex.Store({
      modules:{
           homeModule,
           viewModule,
-          userModule
+          userModule,
      },
      state:{
           windowWidth: 0,
@@ -23,7 +23,8 @@ export default new Vuex.Store({
           dataUrl: 'http://fernfahrer-reporter.de/',
           selectedTab: 0,
           loggedIn: cookies.get('authenticated'),
-          currentUser: {}
+          currentUser: {},
+          searchText: ''
      },
      mutations:{
           setWindowWidth(state, data){
@@ -32,5 +33,9 @@ export default new Vuex.Store({
           setSelectedTab(state, index){
                state.selectedTab = index;
           },
+          setSearchText(state, data){
+               state.searchText = data;
+               console.log(state.searchText);
+          }
      },
 });

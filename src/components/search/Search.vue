@@ -3,7 +3,7 @@
         <div class="search">
             <div class="search-block">
                 <div class="search-block__input">
-                    <input type="text" v-model="searchText">
+                    <input type="text" v-model="searchText" @input="updateSearch">
                 </div>
                 <div class="search-block__description">
                     Deine Suche führt zu folgenden Treffen:
@@ -16,62 +16,38 @@
                     </div>
                 </div>
             </div>
-            <div class="loading-spinner" v-if="contentLoading"></div>            
-            <div class="search-results" v-if="getSearchResults.length != 0 && selectedTab === 0">
-                <div class="search-results__list">
-                    <div class="search-results__list-item" v-for="(user, index) in getSearchResults" :key="index" @click="pushProfile(user.id)">
-                        {{user.username}}
-                    </div>
-                </div>
+            <div class="search-results" v-if="selectedTab === 0">
+                <UserSearch />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { mapState } from 'vuex';
 
 export default {
+    components:{
+        UserSearch: () => import('./UserSearch.vue')
+    },
     data(){
         return{
             tabs: ['Benutzername', 'Bilder', 'Videos'],
-            searchText: '',
-            applicationUsers: [],
             contentLoading: false,
-            selectedTab: 0
+            selectedTab: 0,
+            searchText: ''
         }
     },
     methods:{
-        getUsers(){
-            this.contentLoading = true;
-            axios.get(this.apiUrl + 'getApplicationUsers').then( res => {
-                console.log(res);
-
-                this.applicationUsers = res.data.data.users;
-                this.contentLoading = false;
-            }
-        )},
         selectTab(index){
             this.selectedTab = index;
         },
-        pushProfile(id){
-            this.$router.push({name: 'Profil', params:{id: id}})
+        updateSearch(e){
+            this.$store.commit('setSearchText', e.target.value);
         }
+
     },
     mounted(){
-        this.getUsers();
     },
-    computed:{
-        ...mapState({
-            apiUrl: state => state.url
-        }),
-        getSearchResults(){
-            return this.applicationUsers.filter((user) => {
-                return user.username.match(this.searchText);
-            }); 
-        }
-    }    
 }
 </script>
 
@@ -116,9 +92,10 @@ $icon-size: 20px;
     &-results{
         background-color: grey;
         overflow-y: scroll;
-        height: 100vh;
+        max-height: 100vh;
         &__list{
             &-item{
+                cursor: pointer;
                 padding: 20px 10px;
                 text-align: left;
                 font-family: $f-roboto;

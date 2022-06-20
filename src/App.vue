@@ -2,7 +2,7 @@
   <div id="app">
     <SideBar />
     <router-view :key="$route.fullPath"></router-view>
-
+     <UploadBar />
     <!-- {{home}}
     <a @click="printHello()">asd</a> -->
   </div>
@@ -10,11 +10,13 @@
 
 <script>
 import { mapState, mapActions } from 'vuex';
-import SideBar from './components/components/SideBar';
+import SideBar from './components/components/SideBar.vue';
+import UploadBar from './components/components/UploadBar.vue';
 export default {
      name: 'App',
      components: {
-          SideBar
+          SideBar,
+          UploadBar
      },
      created(){
           window.addEventListener('resize', this.handleResize);

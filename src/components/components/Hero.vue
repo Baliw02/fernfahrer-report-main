@@ -1,7 +1,7 @@
 <template>
      <div class="carousel">
           <div class="carousel-block">
-               <carousel v-on:pageChange="carouselPageChange" :loop="true" :perPage="1" :paginationEnabled="false" :navigateTo="currentSlide">
+               <carousel v-on:pageChange="carouselPageChange" :loop="true" :autoplayTimeout="5000" :perPage="1" :paginationEnabled="false" :autoplay="true" :navigateTo="currentSlide">
                     <slide v-for="slide in missions" :key="slide.id">
                          <div class="slide-content" @click="selectContent(slide.id)">
                               <img :src="'http://fernfahrer-reporter.de' + slide.lead_image" :alt="slide.lead_text + 'image'">

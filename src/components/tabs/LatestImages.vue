@@ -54,6 +54,7 @@ export default {
                          this.contentLoading = true;
                     }
                     if(res.status === 200){
+                         console.log(res.headers);
                          this.images = [...res.data.data.images];
                          setTimeout(() => {
                               this.setThreeColumnImages();
@@ -122,17 +123,22 @@ export default {
                let bottomWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
                if(bottomWindow){
                     this.getImages();
+                    console.log(this.imagesLeft.length);
                }
+          },
+          resetColumns(){
+               this.leftColumn.length = 0;
+               this.centerColumn.length = 0;
+               this.rightColumn.length = 0;
           }
      },
      created(){
           window.addEventListener('resize', this.columnController);
           window.addEventListener('scroll', this.lazyLoadController);
           this.columnController();
-
-
      },
      mounted(){
+          this.resetColumns();
           this.getImages();
           // this.lazyLoadController();
           this.setTabContent();

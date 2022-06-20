@@ -8,23 +8,32 @@ export const checkLoggedIn = ({state, commit}) => {
                var storageData = cookies.get('user');
                var email = storageData.email;
                var password = storageData.password;
-               axios.get('http://fernfahrer-reporter.de/api/json/login', {params: {email: email, password: password}}).then( res => {
-                    if(res.data.error.code){
-                         console.log('itt nem')
-                         cookies.remove('user');
-                         cookies.remove('authenticated');
-                         commit('removeUserData');
-                    }
-                    else{
-                         console.log('Itt is')
-                         commit('setUserData', res.data.data.user);
-                    }
-               });
+               console.log(password);
+               if(password != undefined && email != undefined){
+                    axios.get('http://fernfahrer-reporter.de/api/json/login', {params: {email: email, password: password}}).then( res => {
+                         if(res.data.error.code){
+                              console.log('itt nem')
+                              cookies.remove('user');
+                              cookies.remove('authenticated');
+                              commit('removeUserData');
+                         }
+                         else{
+                              console.log('Itt is')
+                              commit('setUserData', res.data.data.user);
+                         }
+                    });     
+               }
+               else{
+                    cookies.remove('user');
+                    cookies.remove('authenticated');
+                    location.reload();
+               }
           }                    
      }
      else{
           if(cookies.get('user') != undefined){
                cookies.remove('user');
+               cookies.remove('authenticated');
           }
      }
 };

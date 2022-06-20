@@ -122,7 +122,13 @@ export default {
                if(bottomWindow){
                     this.getImages();
                }
+          },
+          resetColumns(){
+               this.leftColumn.length = 0;
+               this.centerColumn.length = 0;
+               this.rightColumn.length = 0;
           }
+
      },
      created(){
           window.addEventListener('resize', this.columnController);
@@ -132,6 +138,7 @@ export default {
 
      },
      mounted(){
+          this.resetColumns()
           this.getImages();
           this.setTabContent();
      },
