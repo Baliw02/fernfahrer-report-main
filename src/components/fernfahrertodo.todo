@@ -1,0 +1,71 @@
+
+Without user data:
+     Sidebar:
+          ✔ Megkell csinalni a routeolast, fele meg van, tobbit forditani kell meg bekotni @done(22-06-14 10:03)
+     Optimalization:
+          ✔ Lazy load axios req @done(22-06-09 15:46)
+          ✔ Loader requestekhez @done(22-06-10 12:40)
+     Home:
+          Tabs:
+               ✔ Auftrage @done(22-06-07 08:32)
+               ✔ Rubriken @done(22-06-07 08:32)
+               ✔ Gekauft mai @done(22-06-07 09:05) 
+          Views:
+               ✔ Sidebarnal megvaltoztatni a menut bal nyilra a visszalepeshez @done(22-06-08 04:43)
+          Authentication(Anmeldung):
+               Login:
+                    ✔ design @done(22-06-07 12:17)
+                    ✔ mechanika @done(22-06-14 10:03)
+               Register:
+                    ✔ design @done(22-06-07 12:17)
+                    ✔ mechanika @done(22-06-14 16:43)
+               Forgot: 
+                    ✔ design @done(22-06-14 16:27)
+                    ✔ mechanika @done(22-06-14 17:08)
+          Search(Suche):
+               ☐ benutzernamen(username)
+               ☐ Bilder
+               ☐ Videos
+
+     Itt ezeknel a siteoknal, okvetlen megkerdezni hogy csak atmasolni e vagy van e valami mas megoldas. Siteok megkrealva, tartalom hianyzik
+     About site: 
+          ✔ Site @done(22-06-09 15:42)
+     DatenSchutz(idk):
+          ✔ Site @done(22-06-09 15:42)
+     AGB:
+          ✔ Site @done(22-06-09 15:42)
+     Impressum:
+          ✔ Site @done(22-06-09 15:42)
+     Sidebar miatt:
+          ✔ Kulon rubriken site @done(22-06-10 12:40)
+          ✔ Kulon auftrage site @done(22-06-10 12:40)
+
+     Tabs(szetszedni):
+          ✔ Latest @done(22-06-09 15:41)
+          ✔ Popular @done(22-06-09 15:42)
+          ✔ Best @done(22-06-09 15:42)
+          ✔ Videos @done(22-06-10 12:40)
+          ✔ Bought @done(22-06-10 12:40)
+
+
+     Utoljara a profilt kezdtem el..
+With User data:
+     User Profile:
+          ✔ Hero @done(22-06-14 15:42)
+          Tabs:
+               ✔ Tabs Header @done(22-06-14 15:40)
+               ✔ Bilder @done(22-06-14 15:40)
+               ✔ Videos @done(22-06-14 15:40)
+               ✔ Favoriten @done(22-06-14 15:40)
+               ☐ Kommentare, nema endpoint, vagz leiras
+               ☐ Hinwise, isto
+               ✔ Profile @done(22-06-14 15:40)
+     Methodok:
+          ✔ like image @done(22-06-16 10:58)
+          ✔ like video @done(22-06-16 10:58)
+          ☐ upload image
+          ☐ upload video
+          ☐ delete image
+          ☐ delete video
+          ☐ flag image
+          ☐ flag video
