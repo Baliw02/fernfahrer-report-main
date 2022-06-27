@@ -68,7 +68,7 @@ export default {
      methods:{
           async getImages(){
                let routeId = this.$route.params.id;
-               await axios.get(this.apiUrl +'getCategory', {params:{id: routeId, limit: this.limiter, from: this.chunks}}).then( res => {
+               await axios.get(this.apiUrl + 'getCategory', {params:{id: routeId, limit: this.limiter, from: this.chunks}}).then( res => {
                     if(!this.categoryLoaded){
                          this.categoryData = res.data.data;
                          this.categoryLoaded = true;

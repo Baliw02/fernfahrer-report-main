@@ -19,6 +19,12 @@
             <div class="search-results" v-if="selectedTab === 0">
                 <UserSearch />
             </div>
+            <!-- <div class="search-results" v-if="selectedTab === 1">
+                <ImageSearch />
+            </div> -->
+            <div class="search-results" v-if="selectedTab === 2">
+                <VideoSearch />
+            </div>
         </div>
     </div>
 </template>
@@ -27,7 +33,9 @@
 
 export default {
     components:{
-        UserSearch: () => import('./UserSearch.vue')
+        UserSearch: () => import('./UserSearch.vue'),
+        // ImageSearch: () => import('./ImageSearch.vue'),
+        VideoSearch: () => import('./VideoSearch')
     },
     data(){
         return{
@@ -41,12 +49,12 @@ export default {
         selectTab(index){
             this.selectedTab = index;
         },
-        updateSearch(e){
-            this.$store.commit('setSearchText', e.target.value);
-        }
-
+        updateSearch(){
+            this.$store.commit('setSearchText', this.searchText);
+        },
     },
     mounted(){
+        this.$store.commit('setSearchText', '');
     },
 }
 </script>
@@ -91,8 +99,6 @@ $icon-size: 20px;
     }
     &-results{
         background-color: grey;
-        overflow-y: scroll;
-        max-height: 100vh;
         &__list{
             &-item{
                 cursor: pointer;

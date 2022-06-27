@@ -126,11 +126,17 @@ export default {
                     console.log(this.imagesLeft.length);
                }
           },
-          resetColumns(){
-               this.leftColumn.length = 0;
-               this.centerColumn.length = 0;
-               this.rightColumn.length = 0;
-          }
+          resetAllColumns(){
+               this.images = [];
+               this.leftColumn = [];
+               this.centerColumn = [];
+               this.rightColumn = [];
+               this.imagesLeft = [];
+               this.imagesCenter = [];
+               this.imagesRight = [];
+               this.twoImagesLeft = [];
+               this.twoImagesRight = [];
+          },
      },
      created(){
           window.addEventListener('resize', this.columnController);
@@ -138,7 +144,7 @@ export default {
           this.columnController();
      },
      mounted(){
-          this.resetColumns();
+          this.resetAllColumns();
           this.getImages();
           // this.lazyLoadController();
           this.setTabContent();

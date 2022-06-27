@@ -122,7 +122,16 @@ export default {
                if(bottomWindow){
                     this.getVideos();
                }
-          }
+          },
+          resetAllColumns(){
+               this.videos = [];
+               this.videosLeft = [];
+               this.videosCenter = [];
+               this.videosRight = [];
+               this.twoVideosLeft = [];
+               this.twoVideosRight = [];
+          },
+
      },
      created(){
           window.addEventListener('resize', this.columnController);
@@ -132,6 +141,7 @@ export default {
 
      },
      mounted(){
+          this.resetAllColumns();
           this.getVideos();
           this.setTabContent();
      },

@@ -123,11 +123,17 @@ export default {
                     this.getImages();
                }
           },
-          resetColumns(){
-               this.leftColumn.length = 0;
-               this.centerColumn.length = 0;
-               this.rightColumn.length = 0;
-          }
+          resetAllColumns(){
+               this.images = [];
+               this.leftColumn = [];
+               this.centerColumn = [];
+               this.rightColumn = [];
+               this.imagesLeft = [];
+               this.imagesCenter = [];
+               this.imagesRight = [];
+               this.twoImagesLeft = [];
+               this.twoImagesRight = [];
+          },
 
      },
      created(){
@@ -138,7 +144,7 @@ export default {
 
      },
      mounted(){
-          this.resetColumns()
+          this.resetAllColumns()
           this.getImages();
           this.setTabContent();
      },

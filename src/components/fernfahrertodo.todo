@@ -25,7 +25,8 @@ Without user data:
           Search(Suche):
                ✔ benutzernamen(username) @done(22-06-20 09:09)
                ☐ Bilder endpoint problema, getImages
-               ☐ Videos 
+               ✔ Videos @done(22-06-21 10:33)
+               ✔ Videonal kell a lazy load @done(22-06-27 08:21)
 
      Itt ezeknel a siteoknal, okvetlen megkerdezni hogy csak atmasolni e vagy van e valami mas megoldas. Siteok megkrealva, tartalom hianyzik
      About site: 
@@ -63,13 +64,19 @@ With User data:
      Methodok:
           ✔ like image @done(22-06-16 10:58)
           ✔ like video @done(22-06-16 10:58)
-          ☐ upload image
-          ☐ upload video
+          ✔ upload image @done(22-06-27 13:33)
+          ✔ upload video @done(22-06-27 14:02)
           ✔ delete image @done(22-06-20 14:34)
-          ☐ delete video
+          ✔ delete video @done(22-06-21 12:37)
           ☐ flag image
           ☐ flag video
 
 
 ☐ Globalisra csinalni a sotetedest a pushoknal.
-☐ Eltuntetni a footert mikor nem a homen vagyok
+✔ Eltuntetni a footert mikor nem a homen vagyok @done(22-06-27 08:25)
+
+Image View:
+     ☐ desc margin stb
+     ☐ swipe
+     ☐ Valamilyen megosztas
+     

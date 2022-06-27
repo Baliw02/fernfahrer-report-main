@@ -61,7 +61,7 @@ $icon-size: 20px;
 .search-results{
      background-color: grey;
      overflow-y: scroll;
-     max-height: 100vh;
+     max-height: calc(100vh - 176px);
      .loading-spinner{
           top: 0;
           bottom: 0;

@@ -8,7 +8,7 @@
                     <div class="image-options__list-item-delete">
                          Bearbeiten
                     </div>
-                    <div class="image-options__list-item-delete" @click="pushDelete">
+                    <div class="image-options__list-item-delete" @click="pushDelete(), pushOptions()">
                          Löschen
                     </div>
                </div>
@@ -21,16 +21,16 @@
                     Bist du sicher, dass du dieses Video/Bild löschen möchtest?
                </div>
                <div class="push-notification__button">
-                    <div class="push-notification__button-close" @click="deleteImage(imageData.id)">
+                    <div class="push-notification__button-close" @click="deleteImage()">
                          Ja
                     </div>
-                    <div class="push-notification__button-login" @click="closePush">
+                    <div class="push-notification__button-login" @click="pushDelete()">
                          Nein
                     </div>
                </div>
           </div>
           <!-- {{imageData.id}} -->
-          <div class="wrapper" :class="{outfocus: pushLoginNotification}">
+          <div class="wrapper" :class="{outfocus: pushLoginNotification}" @click="closeOptions()">
                <div class="image-box">
                     <img class="image-box__image" :src="dataUrl + imageData.image_url">
                     <!-- <button class="image-player__pagination prev" @click="lowerimageController">
@@ -47,7 +47,7 @@
                                    {{imageData.user.username}}
                               </div>
                               <div class="image-info__bar-left-bottom">
-                                   <div class="like" @click="sendLike">
+                                   <div class="like" @click="sendLike()">
                                         <div class="like-icon" :class="{liked: liked}">
                                              <font-awesome-icon :icon="['fa', 'fa-heart']" />
                                         </div>
@@ -59,7 +59,7 @@
                                         <div class="date-icon">
                                              <font-awesome-icon :icon="['fas', 'fa-clock']" />                                        
                                         </div>
-                                        {{imageData.uploadedHours}} Stunden
+                                        {{imageData.info_text}}
                                    </div>
                               </div>
                          </div>
@@ -91,10 +91,10 @@
                     Bitte melde dich an!
                </div>
                <div class="push-notification__button">
-                    <div class="push-notification__button-close" @click="closePush">
+                    <div class="push-notification__button-close" @click="closePush()">
                          Abrechen
                     </div>
-                    <div class="push-notification__button-login" @click="pushLogin">
+                    <div class="push-notification__button-login" @click="pushLogin()">
                          Anmelden
                     </div>
                </div>
@@ -130,6 +130,9 @@ export default {
                else{
                     this.imageOptions = false;
                }
+          },
+          closeOptions(){
+               this.imageOptions = false;
           },
           pushDelete(){
                if(!this.pushDeleteNotification){
@@ -199,7 +202,7 @@ export default {
           async deleteImage(){
                axios.get(this.apiUrl + 'deleteImage', {params: {id: this.imageData.id, user_id: this.currentUser.id}}).then( res => {
                     console.log(res);
-                    this.$router.push('Start');
+                    this.$router.push({name: 'Start'});
                })
           }
      },
@@ -365,6 +368,7 @@ button{
 }
 .push-notification{
      width: 300px;
+     z-index: 99;
      &__description{
           margin: 20px 0px;
      }

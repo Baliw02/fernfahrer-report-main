@@ -28,26 +28,11 @@ export default {
           ...mapActions([
                'getMissions',
                'getCategories',
-          //      'getLatestImages',
-          //      'getPopularImages',
-          //      'getBestImages',
-          //      'getBoughtImages',
-          //      'getVideos'
           ]),
      },
-     // beforeMount(){
-     //      this.lazyLoadController();
-
-     // },
      mounted(){
-          // this.lazyLoadController();
           this.getMissions();
           this.getCategories();
-          // this.getLatestImages();
-          // this.getPopularImages();
-          // this.getBestImages();
-          // this.getBoughtImages();
-          // this.getVideos();
      },
      computed:{
           ...mapState({
@@ -57,7 +42,6 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .home{
      &-carousel{

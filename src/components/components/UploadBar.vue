@@ -1,5 +1,5 @@
 <template>
-     <div class="upload">
+     <div class="upload" v-if="newRoute === 'Start'">
           <div class="upload-bar" @click="pushUpload">
                <div class="upload-bar__circle">
                     <div class="upload-bar__circle-icon">
@@ -10,11 +10,11 @@
           <div class="upload-block" v-if="uploadOpened">
                <input type="file" accept="image/*" capture id="image-camera" ref="image_camera" @change="handleImage">
                <label for="image-camera">Nimm ein Bild auf</label>
-               <input type="file" accept="image/*" id="image">
+               <input type="file" accept="image/*" id="image" ref="image_gallery" @change="handleImage">
                <label for="image">Bilder durchsuchen</label>
                <input type="file" accept="video/mp4,video/x-m4v,video/*" capture id="video-camera">
                <label for="video-camera">Nimm ein Video auf</label>
-               <input type="file" accept="video/mp4,video/x-m4v,video/*" id="video">
+               <input type="file" accept="video/mp4,video/x-m4v,video/*" id="video" ref="video_gallery" @change="handleVideo">
                <label for="video">Videos durchsuchen</label>
           </div>
      </div>
@@ -24,7 +24,15 @@
 export default {
      data(){
           return{
+               oldRoute: '',
+               newRoute: '',
                uploadOpened: false
+          }
+     },
+     watch: {
+          $route(to, from){
+               this.oldRoute = from;
+               this.newRoute = to.name;
           }
      },
      methods:{
@@ -37,7 +45,15 @@ export default {
                }
           },
           handleImage(){
+               this.$store.commit('setFileUpload', this.$refs.image_gallery.files[0]);
+               this.uploadOpened = false;
+               this.$router.push({name: 'Image upload'})
                console.log(this.$refs.image_camera.files[0]);
+          },
+          handleVideo(){
+               this.$store.commit('setFileUpload', this.$refs.video_gallery.files[0]);
+               this.uploadOpened = false;
+               this.$router.push({name: 'Video upload'});
           }
      }
 }

@@ -1,6 +1,35 @@
 <template>
      <div class="video">
           <!-- {{videoData.id}} -->
+          <div class="video-options" v-if="currentUser.id === videoData.user_id" @click="pushOptions">
+               <font-awesome-icon icon="fas fa-ellipsis-v" />
+          </div>
+          <div class="video-options__list" v-if="videoOptions">
+               <div class="video-options__list-item">
+                    <div class="video-options__list-item-delete">
+                         Bearbeiten
+                    </div>
+                    <div class="video-options__list-item-delete" @click="pushDelete(), pushOptions()">
+                         Löschen
+                    </div>
+               </div>
+          </div>
+          <div class="push-notification" v-if="pushDeleteNotification">
+               <div class="push-notification__title">
+                    Reporter
+               </div>
+               <div class="push-notification__description">
+                    Bist du sicher, dass du dieses Video/Bild löschen möchtest?
+               </div>
+               <div class="push-notification__button">
+                    <div class="push-notification__button-delete" @click="deleteVideo()">
+                         Ja
+                    </div>
+                    <div class="push-notification__button-delete" @click="pushDelete()">
+                         Nein
+                    </div>
+               </div>
+          </div>
           <div class="wrapper">
                <div class="video-player">
                     <video class="video-player__video" :src="dataUrl + videoData.video_url" controls :poster="dataUrl + videoData.image_url"></video>
@@ -30,7 +59,7 @@
                                         <div class="date-icon">
                                              <font-awesome-icon :icon="['fas', 'fa-clock']" />                                        
                                         </div>
-                                        {{videoData.uploaded}} Tage
+                                        {{videoData.created_at_label}}
                                    </div>
                               </div>
                          </div>
@@ -84,7 +113,9 @@ export default {
                loggedIn: false,
                liked: false,
                currentUserLiked: [],
-               pushNotification: false
+               pushNotification: false,
+               pushDeleteNotification: false,
+               videoOptions: false
           }
      },
      methods:{
@@ -112,6 +143,26 @@ export default {
           },
           pushLogin(){
                this.$router.push({name: 'Anmeldung'});
+          },
+          pushOptions(){
+               if(!this.videoOptions){
+                    this.videoOptions = true;
+               }
+               else{
+                    this.videoOptions = false;
+               }
+          },
+          closeOptions(){
+               this.videoOptions = false;
+          },
+          pushDelete(){
+               if(!this.pushDeleteNotification){
+                    this.pushLoginNotification = false;
+                    this.pushDeleteNotification = true;
+               }
+               else{
+                    this.pushDeleteNotification = false;
+               }
           },
           async getCurrentUserFavourite(){
                axios.get(this.apiUrl + 'getFavouriteVideos', {params: {user_id: this.currentUser.id}}).then( res => {
@@ -154,6 +205,12 @@ export default {
                else{
                     this.pushNotification = true;
                }
+          },
+          async deleteVideo(){
+               axios.get(this.apiUrl + 'deleteVideo', {params: {id: this.videoData.id, user_id: this.currentUser.id}}).then( res => {
+                    console.log(res);
+                    this.$router.push({name: 'Start'});
+               })
           }
      },
      mounted(){
@@ -182,6 +239,7 @@ export default {
 
 $c-theme: #ED1D24;
 $f-poppins: 'Poppins', sans-serif;
+$f-roboto: 'Roboto';
 $icon-size: 20px;
 
 button{
@@ -189,7 +247,39 @@ button{
 }
 .video{
      margin-top: 50px;
-     font-family: $f-poppins;
+     font-family: $f-roboto;
+     &-options{
+          position: fixed;
+          background-color: grey;
+          top: 0;
+          right: 0;
+          padding: 10px;
+          padding-right: 0;
+          width: 30px;
+          margin: auto;
+          z-index: 99999;
+          cursor: pointer;
+          font-size: 20px;
+     }
+     &-options__list{
+          position: fixed;
+          background-color: white;
+          color: black;
+          z-index: 999999;
+          top: 45px;
+          right: 0;
+          text-align: left;
+          border-radius: 3px;
+          &-item{
+               &-delete{
+                    padding: 10px 0px;
+                    padding-right: 60px;
+                    padding-left: 10px;
+                    cursor: pointer;
+               }
+          }
+     }
+
      &-player{
           position: relative;
           &__video{
@@ -221,7 +311,7 @@ button{
 
      }
      &-info{
-          font-family: $f-poppins;
+          font-family: $f-roboto;
           padding: 0px 10px;
           background-color: black;
           margin-top: -7px;
@@ -280,6 +370,7 @@ button{
 }
 .push-notification{
      width: 300px;
+     z-index: 99;
      &__description{
           margin: 20px 0px;
      }

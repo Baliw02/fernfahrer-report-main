@@ -24,7 +24,9 @@ export default new Vuex.Store({
           selectedTab: 0,
           loggedIn: cookies.get('authenticated'),
           currentUser: {},
-          searchText: ''
+          searchText: '',
+          searchType: false,
+          fileName: ''
      },
      mutations:{
           setWindowWidth(state, data){
@@ -36,6 +38,13 @@ export default new Vuex.Store({
           setSearchText(state, data){
                state.searchText = data;
                console.log(state.searchText);
+          },
+          setSearchType(state){
+               state.searchType = false;
+               state.searchType = true;
+          },
+          setFileUpload(state, data){
+               state.fileName = data;
           }
      },
 });

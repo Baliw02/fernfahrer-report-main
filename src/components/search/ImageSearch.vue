@@ -36,60 +36,60 @@ export default {
                centerColumn: [],
                rightColumn: [],
 
-               videos: [],
-               videosLeft: [],
-               videosCenter: [],
-               videosRight: [],
-               twoVideosLeft: [],
-               twoVideosRight: [],
+               images: [],
+               imagesLeft: [],
+               imagesCenter: [],
+               imagesRight: [],
+               twoImagesLeft: [],
+               twoImagesRight: [],
 
                chunks: 0,
                limiter: 15,
 
-               contentLoading: false
+               contentLoading: false,
+               waitType: false
           }
      },
      methods:{
-          async getVideos(){
-               await axios.get('http://fernfahrer-reporter.de/api/json/getVideos', {params:{limit: this.limiter, from: this.chunks}}).then( res => {
-                    if(res.data.data.videos.length != 0){
+          getImages(searchKey){
+               axios.get(this.apiUrl + 'search', {params: {for: 'images', searchString: searchKey}}).then( res => {
+                    if(res.data.data.images.length != 0){
                          this.contentLoading = true;
                     }
                     if(res.status === 200){
-                         this.videos = [...res.data.data.videos];
-                         setTimeout(() => {
-                              this.setThreeColumnVideos();
-                              this.setTwoColumnVideos();          
-                              this.lazyLoadLimiter();
-                              this.contentLoading = false;
-                         }, 200);
+                         console.log('images at get: ', this.images);
+                         this.images = res.data.data.images;
+                         this.setThreeColumnImages();
+                         this.setTwoColumnImages();          
+                         this.columnController();
+                         this.contentLoading = false;                              
                     }
                });
           },
-          async lazyLoadLimiter(){
-               this.chunks += 15;
-          },
-          setThreeColumnVideos(){
+          setThreeColumnImages(){
+               this.imagesLeft = [];
+               this.imagesCenter = [];
+               this.imagesRight = [];
                setTimeout(() => {
-                    for( var i = 0; i + 1 <= this.videos.length; i+=3 ){
-                         this.videosLeft.push(this.videos[i]);
+                    for( var i = 0; i + 1 <= this.images.length; i+=3 ){
+                         this.imagesLeft.push(this.images[i]);
                     }
-                    for( var j = 1; j + 1 <= this.videos.length; j+=3 ){
-                         this.videosCenter.push(this.videos[j]);
+                    for( var j = 1; j + 1 <= this.images.length; j+=3 ){
+                         this.imagesCenter.push(this.images[j]);
                     }
-                    for( var k = 2; k + 1 <= this.videos.length; k+=3 ){
-                         this.videosRight.push(this.videos[k]);
+                    for( var k = 2; k + 1 <= this.images.length; k+=3 ){
+                         this.imagesRight.push(this.images[k]);
                     }
                }, 200)
           },
-          setTwoColumnVideos(){
+          setTwoColumnImages(){
                setTimeout(() => {
-                    for( var i = 0; i + 1 < this.videos.length; i++){
-                         if(i % 2 == 0){
-                              this.twoVideosLeft.push(this.videos[i]);
+                    for( var i = 0; i + 1 < this.images.length; i++){
+                         if(i % 2 === 0){
+                              this.twoImagesLeft.push(this.images[i]);
                          }
                          else{
-                              this.twoVideosRight.push(this.videos[i]);
+                              this.twoImagesRight.push(this.images[i]);
                          }
                     }
                }, 200)
@@ -100,13 +100,13 @@ export default {
                this.rightColumn = [];
                setTimeout(() => {
                     if(this.windowWidth >= 960){
-                         this.leftColumn = this.videosLeft;
-                         this.centerColumn = this.videosCenter;
-                         this.rightColumn = this.videosRight;
+                         this.leftColumn = this.imagesLeft;
+                         this.centerColumn = this.imagesCenter;
+                         this.rightColumn = this.imagesRight;
                     }                    
                     else{
-                         this.leftColumn = this.twoVideosLeft;
-                         this.rightColumn = this.twoVideosRight;
+                         this.leftColumn = this.twoImagesLeft;
+                         this.rightColumn = this.twoImagesRight;
                     }
 
                }, 500)
@@ -115,39 +115,50 @@ export default {
                this.setTabContent();
           },
           selectContent(id){
-               this.$router.push({name: 'Video view', params: {id: id}});
+               this.$router.push({name: 'Image view', params: {id: id}});
           },
-          lazyLoadController(){
-               let bottomWindow = document.documentElement.scrollTop + window.innerHeight === document.documentElement.offsetHeight;
-               if(bottomWindow){
-                    this.getVideos();
-               }
-          }
      },
      created(){
           window.addEventListener('resize', this.columnController);
-          window.addEventListener('scroll', this.lazyLoadController);
           this.columnController();
-
-
      },
      mounted(){
-          this.getVideos();
+          this.getImages(this.searchText);
      },
-
+     watch:{
+          searchText(){
+               this.contentLoading = true;
+               this.images.length = 0;
+               if(!this.waitType){
+                    setTimeout(() => {
+                         console.log(this.searchText);
+                         this.images.length = 0;
+                         this.getImages(this.searchText);
+                         this.waitType = false;
+                    }, 1000) 
+               }
+               this.waitType = true;
+          }
+     },
      computed:{
           ...mapState({
                apiUrl: state => state.url,
                dataUrl: state => state.dataUrl,
                windowWidth: state => state.windowWidth,
                selectedTab: state => state.selectedTab,
+               searchText: state => state.searchText,
           }),
-          getSearchResults(){
-               return this.applicationUsers.filter((user) => {
-                    return user.username.toUpperCase().match(this.searchText.toUpperCase());
-               }); 
-          },
 
      }
 }
 </script>
+
+<style lang="scss" scoped>
+.tabs-outline{
+     .loading-spinner{
+          top: 0;
+          bottom: 0;
+          margin: auto;
+     }
+}
+</style>
